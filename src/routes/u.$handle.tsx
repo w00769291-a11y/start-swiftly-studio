@@ -278,7 +278,7 @@ function MobileProfile({ profile, isYou, posts, followerCount, followingCount, o
         <div className="mt-3 flex items-start justify-center gap-7">
           <Stat n={abbr(followingCount)} label="connection" onClick={() => onList("following")} />
           <Stat n={abbr(followerCount)} label="Connected" onClick={() => onList("followers")} />
-          <Stat n={posts.length} label="connected" />
+          <Stat n={posts.length} label="Connect" />
           <Stat n={posts.length} label="post" />
         </div>
         <p className="mt-3 text-[14px] font-semibold leading-tight">{view.fullName}</p>
