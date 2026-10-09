@@ -3,7 +3,8 @@ import { useAccount } from "@/lib/account";
 import { useCommunityContent, asExploreItem } from "@/lib/community-content";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { Ban, Flag, Link2, ShieldOff, Bookmark, Clapperboard, Grid3x3, Images, MoreVertical, Plus, Share2, Ticket } from "lucide-react";
+import { Ban, Clock, Flag, Link2, ShieldOff, Bookmark, Clapperboard, Grid3x3, Images, MoreVertical, Plus, Share2, Ticket, UserCheck, UserPlus } from "lucide-react";
+import { approveRequest, cancelOrRemove, declineRequest, mutualOf, sendRequest, statusWith, useConnections, type ConnState } from "@/lib/connections";
 import "@/components/explore/explore.css";
 import { BadgesFor } from "@/components/explore/CategoryBadges";
 import { Avatar, ResponsiveOverlay } from "@/components/explore/shared";
@@ -33,7 +34,9 @@ export const Route = createFileRoute("/u/$handle")({
   component: ProfileRoute,
 });
 
-type ListKind = "followers" | "following";
+type ListKind = "requests" | "connected" | "mutual";
+const LIST_TITLE: Record<ListKind, string> = { requests: "Connection requests", connected: "Connected", mutual: "Connect (mutual)" };
+const connectedIds = (s: ConnState) => Array.from(new Set([...s.outgoing, ...s.approved]));
 
 type ProfileEdits = { username: string; fullName: string; bio: string; location: string };
 const EDIT_KEY = "sac-profile-edit";
@@ -51,6 +54,7 @@ function ProfileRoute() {
   const { handle } = Route.useParams();
   const st = useExploreState();
   const [list, setList] = useState<ListKind | null>(null);
+  const conns = useConnections();
   const profile: ExploreProfile | undefined = handle === "you" ? YOU : findProfile(handle);
   const isYou = handle === "you";
 
@@ -68,21 +72,22 @@ function ProfileRoute() {
 
   const posts = exploreCatalog.filter((i) => i.handle === profile.id);
   const following = followingOf(profile.id, st);
-  const followers = isYou ? [] : followersOf(profile.id);
   const followerCount = isYou ? 0 : profile.followers + (isFollowing(st, profile.id) && !profile.following ? 1 : 0);
   const followingCount = following.length;
   const on = isFollowing(st, profile.id);
+  const listIds = list === "requests" ? conns.incoming : list === "mutual" ? mutualOf(conns) : list === "connected" ? connectedIds(conns) : [];
+  const listProfiles = listIds.map((id) => findProfile(id)).filter((p): p is ExploreProfile => !!p);
 
   return (
     <div className="min-h-[100svh] overflow-x-hidden bg-ink pb-16 pt-[calc(3.5rem+env(safe-area-inset-top))] text-ink-foreground">
       <MobileProfile profile={profile} isYou={isYou} posts={posts} followerCount={followerCount} followingCount={followingCount} on={on} onList={setList} />
       <MobileProfile desktop profile={profile} isYou={isYou} posts={posts} followerCount={followerCount} followingCount={followingCount} on={on} onList={setList} />
 
-      <ResponsiveOverlay open={list !== null} onOpenChange={(o) => !o && setList(null)} title={list === "following" ? "Connected" : "Connections"}>
+      <ResponsiveOverlay open={list !== null} onOpenChange={(o) => !o && setList(null)} title={LIST_TITLE[list ?? "requests"]}>
         <div className="flex max-h-[70dvh] min-h-0 flex-col">
-          <h2 className="border-b border-ink-border px-4 py-3 text-center text-[15px] font-semibold capitalize">{list}</h2>
+          <h2 className="border-b border-ink-border px-4 py-3 text-center text-[15px] font-semibold">{LIST_TITLE[list ?? "requests"]}</h2>
           <ul className="min-h-0 flex-1 overflow-y-auto py-2">
-            {(list === "following" ? following : followers).map((p) => (
+            {listProfiles.map((p) => (
               <li key={p.id} className="flex items-center gap-3 px-4 py-2">
                 <Avatar name={p.fullName} size={44} />
                 <div className="min-w-0 flex-1">
@@ -92,10 +97,16 @@ function ProfileRoute() {
                   </p>
                   <p className="truncate text-[13px] text-ink-muted">{p.fullName}</p>
                 </div>
+                {list === "requests" && (
+                  <div className="flex shrink-0 gap-1.5">
+                    <button onClick={() => { approveRequest(p.id); toast(`You approved ${p.username}`); }} className="h-8 rounded-md bg-primary px-3 text-[12px] font-bold text-primary-foreground hover:opacity-90">Approve</button>
+                    <button onClick={() => declineRequest(p.id)} className="h-8 rounded-md bg-ink-soft px-3 text-[12px] font-bold hover:opacity-80">Decline</button>
+                  </div>
+                )}
               </li>
             ))}
-            {(list === "following" ? following : followers).length === 0 && (
-              <li className="px-4 py-10 text-center text-[14px] text-ink-muted">{list === "following" ? "You aren't connected with anyone yet." : "No connections yet."}</li>
+            {listProfiles.length === 0 && (
+              <li className="px-4 py-10 text-center text-[14px] text-ink-muted">{list === "requests" ? "No connection requests." : list === "mutual" ? "No mutual connections yet." : "You aren't connected with anyone yet."}</li>
             )}
           </ul>
         </div>
@@ -175,6 +186,7 @@ function ProfileEmptyState({ tab, isYou, onCreate }: { tab: Tab; isYou: boolean;
 
 function MobileProfile({ profile, isYou, posts, followerCount, followingCount, on, onList, desktop = false }: { profile: ExploreProfile; isYou: boolean; posts: ExploreItem[]; followerCount: number; followingCount: number; on: boolean; onList: (k: ListKind) => void; desktop?: boolean }) {
   const st = useExploreState();
+  const conns = useConnections();
   const account = useAccount();
   const cloudContent = useCommunityContent();
   const saved = useSaved();
@@ -276,9 +288,18 @@ function MobileProfile({ profile, isYou, posts, followerCount, followingCount, o
           <BadgesFor handle={profile.id} />
         </h1>
         <div className="mt-3 flex items-start justify-center gap-7">
-          <Stat n={abbr(followingCount)} label="connection" onClick={() => onList("following")} />
-          <Stat n={abbr(followerCount)} label="Connected" onClick={() => onList("followers")} />
-          <Stat n={posts.length} label="Connect" />
+          {isYou ? (
+            <>
+              <Stat n={conns.incoming.length} label="connection" onClick={() => onList("requests")} />
+              <Stat n={connectedIds(conns).length} label="Connected" onClick={() => onList("connected")} />
+              <Stat n={mutualOf(conns).length} label="Connect" onClick={() => onList("mutual")} />
+            </>
+          ) : (
+            <>
+              <Stat n={abbr(followingCount)} label="connection" />
+              <Stat n={abbr(followerCount)} label="Connected" />
+            </>
+          )}
           <Stat n={posts.length} label="post" />
         </div>
         <p className="mt-3 text-[14px] font-semibold leading-tight">{view.fullName}</p>
@@ -286,12 +307,31 @@ function MobileProfile({ profile, isYou, posts, followerCount, followingCount, o
         {statusChip}
         {view.bio && <p className="mx-auto mt-1.5 line-clamp-3 max-w-[34ch] text-[12.5px] leading-snug text-ink-foreground/80">{view.bio}</p>}
         {view.location && <p className="mt-1 text-[12px] text-ink-muted">{view.location}</p>}
-        {isYou && (
+        {isYou ? (
           <div className="mx-auto mt-2 grid w-full max-w-[320px] grid-cols-2 gap-2">
-            <button onClick={() => setCreate(true)} className="flex h-10 items-center justify-center gap-1.5 rounded-md bg-primary text-[12px] font-bold text-primary-foreground hover:opacity-90">
-              <Plus className="h-4 w-4" /> Create
+            <button onClick={() => onList("requests")} className="relative flex h-10 items-center justify-center gap-1.5 rounded-md bg-primary text-[12px] font-bold text-primary-foreground hover:opacity-90">
+              <UserPlus className="h-4 w-4" /> Connect
+              {conns.incoming.length > 0 && <span className="ml-1 rounded-full bg-primary-foreground px-1.5 text-[10px] text-primary">{conns.incoming.length}</span>}
             </button>
             <button onClick={() => openAccountEditProfile()} className="h-10 rounded-md bg-ink-soft text-[12px] font-bold hover:opacity-80">Edit profile</button>
+          </div>
+        ) : !blocked && (
+          <div className="mx-auto mt-2 w-full max-w-[320px]">
+            {(() => {
+              const s = statusWith(conns, profile.id);
+              const label = s === "none" ? "Connect" : s === "requested" ? "Requested" : s === "mutual" ? "Connect · Mutual" : "Connected";
+              return (
+                <button
+                  onClick={() => {
+                    if (s === "none") { sendRequest(profile.id); toast(`Connection request sent to ${view.username}`); }
+                    else { cancelOrRemove(profile.id); toast(s === "requested" ? "Request cancelled" : `Removed ${view.username}`); }
+                  }}
+                  className={cn("flex h-10 w-full items-center justify-center gap-1.5 rounded-md text-[12px] font-bold hover:opacity-90", s === "none" ? "bg-primary text-primary-foreground" : "bg-ink-soft")}
+                >
+                  {s === "none" ? <UserPlus className="h-4 w-4" /> : s === "requested" ? <Clock className="h-4 w-4" /> : <UserCheck className="h-4 w-4" />} {label}
+                </button>
+              );
+            })()}
           </div>
         )}
       </section>
