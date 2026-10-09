@@ -1,0 +1,2 @@
+DROP POLICY content_create ON public.community_content;
+CREATE POLICY content_create ON public.community_content FOR INSERT TO authenticated WITH CHECK (user_id = auth.uid() AND (kind IN ('post','reel','tweet') OR EXISTS (SELECT 1 FROM public.user_roles WHERE user_roles.user_id = auth.uid() AND role = 'business')) AND (kind <> 'ticket' OR EXISTS (SELECT 1 FROM public.community_content e WHERE e.id = community_content.event_id AND e.user_id = auth.uid() AND e.kind = 'event')));

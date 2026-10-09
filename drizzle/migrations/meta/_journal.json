@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1791546019282,
+      "tag": "0000_community_accounts_content",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1791546542653,
+      "tag": "0001_fix_ticket_policy",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1791547453079,
+      "tag": "0002_apply_imported_schema",
+      "breakpoints": true
+    }
+  ]
+}
