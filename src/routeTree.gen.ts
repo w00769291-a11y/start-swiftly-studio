@@ -10,33 +10,271 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ArtsRouteImport } from './routes/arts'
+import { Route as AthletesRouteImport } from './routes/athletes'
+import { Route as CommunityProfileRouteImport } from './routes/community-profile'
+import { Route as CultureRouteImport } from './routes/culture'
+import { Route as EventsRouteImport } from './routes/events'
+import { Route as ExploreRouteImport } from './routes/explore'
+import { Route as FestivalsRouteImport } from './routes/festivals'
+import { Route as GamingRouteImport } from './routes/gaming'
+import { Route as ListEventRouteImport } from './routes/list-event'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as MySacRouteImport } from './routes/my-sac'
+import { Route as NewsRouteImport } from './routes/news'
+import { Route as OrganizersRouteImport } from './routes/organizers'
+import { Route as SportsRouteImport } from './routes/sports'
+import { Route as AccountTicketsRouteImport } from './routes/account.tickets'
+import { Route as CommunityHandleRouteImport } from './routes/community.$handle'
+import { Route as EventSlugRouteImport } from './routes/event.$slug'
+import { Route as UHandleRouteImport } from './routes/u.$handle'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ArtsRoute = ArtsRouteImport.update({
+  id: '/arts',
+  path: '/arts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AthletesRoute = AthletesRouteImport.update({
+  id: '/athletes',
+  path: '/athletes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CommunityProfileRoute = CommunityProfileRouteImport.update({
+  id: '/community-profile',
+  path: '/community-profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CultureRoute = CultureRouteImport.update({
+  id: '/culture',
+  path: '/culture',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EventsRoute = EventsRouteImport.update({
+  id: '/events',
+  path: '/events',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExploreRoute = ExploreRouteImport.update({
+  id: '/explore',
+  path: '/explore',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FestivalsRoute = FestivalsRouteImport.update({
+  id: '/festivals',
+  path: '/festivals',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GamingRoute = GamingRouteImport.update({
+  id: '/gaming',
+  path: '/gaming',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ListEventRoute = ListEventRouteImport.update({
+  id: '/list-event',
+  path: '/list-event',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MySacRoute = MySacRouteImport.update({
+  id: '/my-sac',
+  path: '/my-sac',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NewsRoute = NewsRouteImport.update({
+  id: '/news',
+  path: '/news',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OrganizersRoute = OrganizersRouteImport.update({
+  id: '/organizers',
+  path: '/organizers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SportsRoute = SportsRouteImport.update({
+  id: '/sports',
+  path: '/sports',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccountTicketsRoute = AccountTicketsRouteImport.update({
+  id: '/account/tickets',
+  path: '/account/tickets',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CommunityHandleRoute = CommunityHandleRouteImport.update({
+  id: '/community/$handle',
+  path: '/community/$handle',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EventSlugRoute = EventSlugRouteImport.update({
+  id: '/event/$slug',
+  path: '/event/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UHandleRoute = UHandleRouteImport.update({
+  id: '/u/$handle',
+  path: '/u/$handle',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/arts': typeof ArtsRoute
+  '/athletes': typeof AthletesRoute
+  '/community-profile': typeof CommunityProfileRoute
+  '/culture': typeof CultureRoute
+  '/events': typeof EventsRoute
+  '/explore': typeof ExploreRoute
+  '/festivals': typeof FestivalsRoute
+  '/gaming': typeof GamingRoute
+  '/list-event': typeof ListEventRoute
+  '/login': typeof LoginRoute
+  '/my-sac': typeof MySacRoute
+  '/news': typeof NewsRoute
+  '/organizers': typeof OrganizersRoute
+  '/sports': typeof SportsRoute
+  '/account/tickets': typeof AccountTicketsRoute
+  '/community/$handle': typeof CommunityHandleRoute
+  '/event/$slug': typeof EventSlugRoute
+  '/u/$handle': typeof UHandleRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/arts': typeof ArtsRoute
+  '/athletes': typeof AthletesRoute
+  '/community-profile': typeof CommunityProfileRoute
+  '/culture': typeof CultureRoute
+  '/events': typeof EventsRoute
+  '/explore': typeof ExploreRoute
+  '/festivals': typeof FestivalsRoute
+  '/gaming': typeof GamingRoute
+  '/list-event': typeof ListEventRoute
+  '/login': typeof LoginRoute
+  '/my-sac': typeof MySacRoute
+  '/news': typeof NewsRoute
+  '/organizers': typeof OrganizersRoute
+  '/sports': typeof SportsRoute
+  '/account/tickets': typeof AccountTicketsRoute
+  '/community/$handle': typeof CommunityHandleRoute
+  '/event/$slug': typeof EventSlugRoute
+  '/u/$handle': typeof UHandleRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/arts': typeof ArtsRoute
+  '/athletes': typeof AthletesRoute
+  '/community-profile': typeof CommunityProfileRoute
+  '/culture': typeof CultureRoute
+  '/events': typeof EventsRoute
+  '/explore': typeof ExploreRoute
+  '/festivals': typeof FestivalsRoute
+  '/gaming': typeof GamingRoute
+  '/list-event': typeof ListEventRoute
+  '/login': typeof LoginRoute
+  '/my-sac': typeof MySacRoute
+  '/news': typeof NewsRoute
+  '/organizers': typeof OrganizersRoute
+  '/sports': typeof SportsRoute
+  '/account/tickets': typeof AccountTicketsRoute
+  '/community/$handle': typeof CommunityHandleRoute
+  '/event/$slug': typeof EventSlugRoute
+  '/u/$handle': typeof UHandleRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/arts'
+    | '/athletes'
+    | '/community-profile'
+    | '/culture'
+    | '/events'
+    | '/explore'
+    | '/festivals'
+    | '/gaming'
+    | '/list-event'
+    | '/login'
+    | '/my-sac'
+    | '/news'
+    | '/organizers'
+    | '/sports'
+    | '/account/tickets'
+    | '/community/$handle'
+    | '/event/$slug'
+    | '/u/$handle'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/arts'
+    | '/athletes'
+    | '/community-profile'
+    | '/culture'
+    | '/events'
+    | '/explore'
+    | '/festivals'
+    | '/gaming'
+    | '/list-event'
+    | '/login'
+    | '/my-sac'
+    | '/news'
+    | '/organizers'
+    | '/sports'
+    | '/account/tickets'
+    | '/community/$handle'
+    | '/event/$slug'
+    | '/u/$handle'
+  id:
+    | '__root__'
+    | '/'
+    | '/arts'
+    | '/athletes'
+    | '/community-profile'
+    | '/culture'
+    | '/events'
+    | '/explore'
+    | '/festivals'
+    | '/gaming'
+    | '/list-event'
+    | '/login'
+    | '/my-sac'
+    | '/news'
+    | '/organizers'
+    | '/sports'
+    | '/account/tickets'
+    | '/community/$handle'
+    | '/event/$slug'
+    | '/u/$handle'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ArtsRoute: typeof ArtsRoute
+  AthletesRoute: typeof AthletesRoute
+  CommunityProfileRoute: typeof CommunityProfileRoute
+  CultureRoute: typeof CultureRoute
+  EventsRoute: typeof EventsRoute
+  ExploreRoute: typeof ExploreRoute
+  FestivalsRoute: typeof FestivalsRoute
+  GamingRoute: typeof GamingRoute
+  ListEventRoute: typeof ListEventRoute
+  LoginRoute: typeof LoginRoute
+  MySacRoute: typeof MySacRoute
+  NewsRoute: typeof NewsRoute
+  OrganizersRoute: typeof OrganizersRoute
+  SportsRoute: typeof SportsRoute
+  AccountTicketsRoute: typeof AccountTicketsRoute
+  CommunityHandleRoute: typeof CommunityHandleRoute
+  EventSlugRoute: typeof EventSlugRoute
+  UHandleRoute: typeof UHandleRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +286,155 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/arts': {
+      id: '/arts'
+      path: '/arts'
+      fullPath: '/arts'
+      preLoaderRoute: typeof ArtsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/athletes': {
+      id: '/athletes'
+      path: '/athletes'
+      fullPath: '/athletes'
+      preLoaderRoute: typeof AthletesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/community-profile': {
+      id: '/community-profile'
+      path: '/community-profile'
+      fullPath: '/community-profile'
+      preLoaderRoute: typeof CommunityProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/culture': {
+      id: '/culture'
+      path: '/culture'
+      fullPath: '/culture'
+      preLoaderRoute: typeof CultureRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/events': {
+      id: '/events'
+      path: '/events'
+      fullPath: '/events'
+      preLoaderRoute: typeof EventsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/explore': {
+      id: '/explore'
+      path: '/explore'
+      fullPath: '/explore'
+      preLoaderRoute: typeof ExploreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/festivals': {
+      id: '/festivals'
+      path: '/festivals'
+      fullPath: '/festivals'
+      preLoaderRoute: typeof FestivalsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gaming': {
+      id: '/gaming'
+      path: '/gaming'
+      fullPath: '/gaming'
+      preLoaderRoute: typeof GamingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/list-event': {
+      id: '/list-event'
+      path: '/list-event'
+      fullPath: '/list-event'
+      preLoaderRoute: typeof ListEventRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/my-sac': {
+      id: '/my-sac'
+      path: '/my-sac'
+      fullPath: '/my-sac'
+      preLoaderRoute: typeof MySacRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/news': {
+      id: '/news'
+      path: '/news'
+      fullPath: '/news'
+      preLoaderRoute: typeof NewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/organizers': {
+      id: '/organizers'
+      path: '/organizers'
+      fullPath: '/organizers'
+      preLoaderRoute: typeof OrganizersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sports': {
+      id: '/sports'
+      path: '/sports'
+      fullPath: '/sports'
+      preLoaderRoute: typeof SportsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/account/tickets': {
+      id: '/account/tickets'
+      path: '/account/tickets'
+      fullPath: '/account/tickets'
+      preLoaderRoute: typeof AccountTicketsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/community/$handle': {
+      id: '/community/$handle'
+      path: '/community/$handle'
+      fullPath: '/community/$handle'
+      preLoaderRoute: typeof CommunityHandleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/event/$slug': {
+      id: '/event/$slug'
+      path: '/event/$slug'
+      fullPath: '/event/$slug'
+      preLoaderRoute: typeof EventSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/u/$handle': {
+      id: '/u/$handle'
+      path: '/u/$handle'
+      fullPath: '/u/$handle'
+      preLoaderRoute: typeof UHandleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ArtsRoute: ArtsRoute,
+  AthletesRoute: AthletesRoute,
+  CommunityProfileRoute: CommunityProfileRoute,
+  CultureRoute: CultureRoute,
+  EventsRoute: EventsRoute,
+  ExploreRoute: ExploreRoute,
+  FestivalsRoute: FestivalsRoute,
+  GamingRoute: GamingRoute,
+  ListEventRoute: ListEventRoute,
+  LoginRoute: LoginRoute,
+  MySacRoute: MySacRoute,
+  NewsRoute: NewsRoute,
+  OrganizersRoute: OrganizersRoute,
+  SportsRoute: SportsRoute,
+  AccountTicketsRoute: AccountTicketsRoute,
+  CommunityHandleRoute: CommunityHandleRoute,
+  EventSlugRoute: EventSlugRoute,
+  UHandleRoute: UHandleRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

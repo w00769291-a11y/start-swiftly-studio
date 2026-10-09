@@ -1,0 +1,132 @@
+/* Explore-only styles. Every selector is prefixed `explore-`; nothing here touches other pages. */
+
+@property --explore-a {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.explore-root {
+  --explore-header-h: 3.5rem;
+  --explore-nav-h: 3.5rem;
+  --explore-rail-w: 72px;
+  --explore-col: 100%;
+  --explore-gap: 32px;
+  width: 100%;
+  min-height: 100dvh;
+  margin: 0;
+  overflow-x: clip;
+}
+@media (min-width: 768px) {
+  .explore-root {
+    --explore-col: min(100%, 630px);
+    padding-left: var(--explore-rail-w);
+    transition: padding-left 200ms ease;
+  }
+  .explore-rail {
+    width: var(--explore-rail-w);
+    transition: width 200ms ease;
+  }
+}
+@media (min-width: 1200px) {
+  .explore-root { --explore-col: clamp(520px, 44vw, 630px); }
+}
+.explore-grid {
+  display: grid;
+  grid-template-columns: minmax(0, var(--explore-col));
+  justify-content: center;
+  column-gap: var(--explore-gap);
+}
+@media (min-width: 1200px) {
+  .explore-grid { grid-template-columns: minmax(0, var(--explore-col)) 300px; }
+}
+
+/* Rail tooltip (collapsed rail only) */
+.explore-tip {
+  position: absolute;
+  left: calc(100% + 6px);
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 120ms ease;
+  z-index: 60;
+}
+.explore-rail-item:hover .explore-tip,
+.explore-rail-item:focus-visible .explore-tip { opacity: 1; }
+
+/* Stories: red / black / white rotating ring with a pulsing glow */
+.explore-story-ring {
+  padding: 3px;
+  border-radius: 50%;
+  background: conic-gradient(from var(--explore-a), var(--primary), #000, #fff, var(--primary));
+  animation: explore-spin 3s linear infinite, explore-glow 2s ease-in-out infinite alternate;
+}
+.explore-story-ring.is-seen {
+  background: oklch(1 0 0 / 28%);
+  animation: none;
+  box-shadow: none;
+}
+.explore-story-ring.is-none {
+  background: transparent;
+  animation: none;
+  box-shadow: none;
+}
+@keyframes explore-spin { to { --explore-a: 360deg; } }
+@keyframes explore-glow {
+  from { box-shadow: 0 0 6px 1px color-mix(in oklch, var(--primary) 55%, transparent); }
+  to { box-shadow: 0 0 14px 4px rgba(255, 255, 255, 0.45); }
+}
+
+/* Add-pics circle: dashed ring with a plus, Instagram style */
+.explore-add-circle {
+  border: 2px dashed var(--ink-muted);
+  color: var(--ink-foreground);
+  transition: transform 0.18s ease, border-color 0.18s ease;
+}
+.explore-add-circle:active {
+  transform: scale(0.9);
+  border-color: var(--primary);
+}
+
+/* Double-tap heart burst */
+.explore-burst { animation: explore-burst 0.8s ease-out forwards; }
+@keyframes explore-burst {
+  0% { transform: scale(0); opacity: 0; }
+  15% { transform: scale(1.25); opacity: 1; }
+  30% { transform: scale(0.95); }
+  60% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.15); opacity: 0; }
+}
+.explore-pop { animation: explore-pop 0.3s ease; }
+@keyframes explore-pop { 40% { transform: scale(1.3); } }
+
+/* Reel viewer sizing: video sized by height so it fills the screen without side gaps */
+.explore-reel-video {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+@media (min-width: 768px) {
+  .explore-reel-video {
+    height: calc(100dvh - var(--explore-header-h) - 24px);
+    min-height: 420px;
+    width: auto;
+    aspect-ratio: 9 / 16;
+    max-width: 100%;
+  }
+}
+
+.explore-toast { animation: explore-toast 2.2s ease forwards; }
+@keyframes explore-toast {
+  0% { opacity: 0; transform: translate(-50%, 8px); }
+  10%, 85% { opacity: 1; transform: translate(-50%, 0); }
+  100% { opacity: 0; transform: translate(-50%, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .explore-story-ring { animation: none; }
+  .explore-burst, .explore-pop, .explore-toast { animation-duration: 0.01ms; }
+  .explore-root, .explore-rail { transition: none; }
+}
