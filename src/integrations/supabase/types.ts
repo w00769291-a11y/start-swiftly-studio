@@ -14,13 +14,111 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      community_content: {
+        Row: {
+          caption: string
+          city: string
+          created_at: string
+          event_date: string | null
+          event_id: string | null
+          id: string
+          kind: string
+          media: string[]
+          price: number
+          title: string
+          user_id: string
+        }
+        Insert: {
+          caption?: string
+          city?: string
+          created_at?: string
+          event_date?: string | null
+          event_id?: string | null
+          id?: string
+          kind: string
+          media?: string[]
+          price?: number
+          title?: string
+          user_id: string
+        }
+        Update: {
+          caption?: string
+          city?: string
+          created_at?: string
+          event_date?: string | null
+          event_id?: string | null
+          id?: string
+          kind?: string
+          media?: string[]
+          price?: number
+          title?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "community_content_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "community_content"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "community_content_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          bio: string
+          full_name: string
+          id: string
+          location: string
+          username: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string
+          full_name?: string
+          id: string
+          location?: string
+          username: string
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string
+          full_name?: string
+          id?: string
+          location?: string
+          username?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          role: string
+          user_id: string
+        }
+        Insert: {
+          role?: string
+          user_id: string
+        }
+        Update: {
+          role?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      set_account_type: { Args: { account_type: string }; Returns: undefined }
     }
     Enums: {
       [_ in never]: never
