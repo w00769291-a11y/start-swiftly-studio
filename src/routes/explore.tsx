@@ -1,11 +1,12 @@
 import { CreateContent } from "@/components/account/CreateContent";
 import { UploadedEvents } from "@/components/account/UploadedEvents";
 import { useAccount, signOutAccount } from "@/lib/account";
+import { supabase } from "@/integrations/supabase/client";
 import { useCommunityContent, asExploreItem } from "@/lib/community-content";
 import { Button } from "@/components/ui/button";
 import { CalendarDays } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
-import { createFileRoute, Link, useNavigate, useRouter } from "@tanstack/react-router";
+import { createFileRoute, Link, redirect, useNavigate, useRouter } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { ArrowLeft, Bookmark, Clapperboard, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Heart, Home, MessageCircle, MoreHorizontal, Plus, Repeat2, Search, Send, Volume2, VolumeX } from "lucide-react";
 import "@/components/explore/explore.css";
@@ -20,6 +21,12 @@ import { cn } from "@/lib/utils";
 import { addMyItem, addMyStory, readFileAsDataUrl, useMyContent } from "@/lib/my-content";
 
 export const Route = createFileRoute("/explore")({
+  ssr: false,
+  // Login is compulsory to enter Explore: check the session before the page loads.
+  beforeLoad: async () => {
+    const { data } = await supabase.auth.getUser();
+    if (!data.user) throw redirect({ to: "/login" });
+  },
   head: () => ({
     meta: [
       { title: "Explore — SAC Community" },
