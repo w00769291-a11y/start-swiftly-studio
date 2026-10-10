@@ -2,7 +2,7 @@ import { CreateContent } from "@/components/account/CreateContent";
 import { useAccount } from "@/lib/account";
 import { useCommunityContent, asExploreItem } from "@/lib/community-content";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { Ban, Clock, Flag, Link2, ShieldOff, Bookmark, Clapperboard, Grid3x3, Home, Images, MoreVertical, Plus, Search, Share2, Ticket, UserCheck, UserPlus } from "lucide-react";
 import { approveRequest, cancelOrRemove, declineRequest, mutualOf, sendRequest, statusWith, useConnections, type ConnState } from "@/lib/connections";
 import "@/components/explore/explore.css";
@@ -83,7 +83,7 @@ function ProfileRoute() {
 
   const firstReel = exploreCatalog.find((i) => i.kind === "reel")?.id;
   const railCls = "explore-rail-item relative grid h-12 w-12 place-items-center md:flex md:w-full md:items-center md:justify-start md:gap-4 md:rounded-lg md:px-[18px] md:hover:bg-ink-soft/60";
-  const railInner = (label: string, icon: React.ReactNode) => (
+  const railInner = (label: string, icon: ReactNode) => (
     <>
       <span className="grid w-9 shrink-0 place-items-center">{icon}</span>
       <span className="hidden whitespace-nowrap text-[15px] font-semibold md:inline">{label}</span>
