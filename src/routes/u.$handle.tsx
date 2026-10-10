@@ -81,10 +81,29 @@ function ProfileRoute() {
   const listIds = list === "requests" ? conns.incoming : list === "mutual" ? mutualOf(conns) : list === "connected" ? connectedIds(conns) : [];
   const listProfiles = listIds.map((id) => findProfile(id)).filter((p): p is ExploreProfile => !!p);
 
+  const firstReel = exploreCatalog.find((i) => i.kind === "reel")?.id;
+  const railCls = "explore-rail-item relative grid h-12 w-12 place-items-center md:flex md:w-full md:items-center md:justify-start md:gap-4 md:rounded-lg md:px-[18px] md:hover:bg-ink-soft/60";
+  const railInner = (label: string, icon: React.ReactNode) => (
+    <>
+      <span className="grid w-9 shrink-0 place-items-center">{icon}</span>
+      <span className="hidden whitespace-nowrap text-[15px] font-semibold md:inline">{label}</span>
+      <span className="explore-tip hidden rounded-md bg-ink-soft px-2.5 py-1 text-[12px] font-semibold text-ink-foreground shadow-lg md:block">{label}</span>
+    </>
+  );
+
   return (
-    <div className="min-h-[100svh] overflow-x-hidden bg-ink pb-16 pt-[calc(3.5rem+env(safe-area-inset-top))] text-ink-foreground">
+    <div className="explore-root min-h-[100svh] bg-ink pb-16 pt-[calc(3.5rem+var(--explore-nav-h)+env(safe-area-inset-top))] text-ink-foreground md:pt-[calc(3.5rem+env(safe-area-inset-top))]">
       <MobileProfile profile={profile} isYou={isYou} posts={posts} followerCount={followerCount} followingCount={followingCount} on={on} onList={setList} />
       <MobileProfile desktop profile={profile} isYou={isYou} posts={posts} followerCount={followerCount} followingCount={followingCount} on={on} onList={setList} />
+
+      {/* Same nav as Explore: horizontal bar on mobile, fixed rail on the left from tablet up. */}
+      <nav aria-label="Explore" className="explore-rail fixed inset-x-0 top-[calc(3.5rem+env(safe-area-inset-top))] z-40 flex h-[var(--explore-nav-h)] items-center justify-around border-b border-ink-border bg-ink md:bottom-0 md:right-auto md:top-[var(--explore-header-h)] md:h-auto md:flex-col md:items-stretch md:justify-start md:gap-2 md:border-b-0 md:border-r md:px-0 md:pb-4 md:pt-6">
+        <button onClick={() => setCreateOpen(true)} aria-label="Create" className={railCls}>{railInner("Create", <span className="explore-add-circle grid h-9 w-9 place-items-center rounded-full"><Plus className="h-4 w-4" /></span>)}</button>
+        <Link to="/explore" aria-label="Home" className={railCls}>{railInner("Home", <Home className="h-7 w-7" />)}</Link>
+        <Link to="/explore" search={{ reel: firstReel }} aria-label="Reels" className={railCls}>{railInner("Reels", <Clapperboard className="h-7 w-7" />)}</Link>
+        <button onClick={() => setSearchOpen(true)} aria-label="Search" className={railCls}>{railInner("Search", <Search className="h-7 w-7" />)}</button>
+        <Link to="/u/$handle" params={{ handle: "you" }} aria-label="Profile" className={railCls}>{railInner("Profile", <Avatar name="you" size={28} />)}</Link>
+      </nav>
 
       <ResponsiveOverlay open={list !== null} onOpenChange={(o) => !o && setList(null)} title={LIST_TITLE[list ?? "requests"]}>
         <div className="flex max-h-[70dvh] min-h-0 flex-col">
