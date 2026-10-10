@@ -55,6 +55,8 @@ function ProfileRoute() {
   const { handle } = Route.useParams();
   const st = useExploreState();
   const [list, setList] = useState<ListKind | null>(null);
+  const [createOpen, setCreateOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const conns = useConnections();
   const profile: ExploreProfile | undefined = handle === "you" ? YOU : findProfile(handle);
   const isYou = handle === "you";
