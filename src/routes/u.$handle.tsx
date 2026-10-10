@@ -133,6 +133,9 @@ function ProfileRoute() {
           </ul>
         </div>
       </ResponsiveOverlay>
+
+      {searchOpen && <ExploreSearch fullscreen onClose={() => setSearchOpen(false)} />}
+      <CreateContent open={createOpen} onClose={() => setCreateOpen(false)} />
     </div>
   );
 }
